@@ -34,3 +34,13 @@ tr {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
+
+#data_edit {
+    width: 25%;
+    height: 50%;
+    border: 1px solid red;
+    position: fixed;
+    left: 0px;
+    top: 100px;
+    display: none;
+}

@@ -15,15 +15,28 @@
         <table>
             <thead>
                 <tr>
-                    <th>Имя (firstName)</th>
-                    <th>Фамилия (lastName)</th>
-                    <th>Описание (about)</th>
-                    <th>Цвет глаз (eyeColor)</th>
+                    <th id="firstName">Имя (firstName)</th>
+                    <th id="lastName">Фамилия (lastName)</th>
+                    <th id="about">Описание (about)</th>
+                    <th id="eyeColor">Цвет глаз (eyeColor)</th>
                 </tr>
             </thead>
             <tbody id="tableData"></tbody>
         </table>
 
+    </div>
+
+    <div  id="data_edit">
+        <form action="#">
+            <input id="data_firstName" type="text"><br>
+            <input id="data_lastName" type="text"><br>
+            <input id="data_about" type="text"><br>
+            <input id="data_eyeColor" type="text"><br>
+            <input id="data_phone" type="text"><br>
+
+            <button id="but_send">Отправить</button>
+            <button id="but_close">Закрыть</button>
+        </form>
     </div>
 
     <script src="data.json"></script>
