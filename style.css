@@ -1,10 +1,36 @@
 #table {
-    border: 1px solid black;
-
-    display: flex;
-    
+    margin:50px 25% 0 25%;
+    width:50%;
 }
 
-div {
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
     border: 1px solid black;
+    text-align: center;
+}
+
+th {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+tr {
+    border-bottom: 1px solid black ;
+}
+
+.about {
+    text-align: left;
+
+    display: -webkit-box;
+    line-height: 30px;
+
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
