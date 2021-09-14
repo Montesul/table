@@ -1,6 +1,11 @@
+body {
+    width: auto;
+    height: auto;
+}
+
 #table {
-    margin:50px 25% 0 25%;
-    width:50%;
+    margin: 0 25% 0 25%;
+    width: 50%;
 }
 
 table {
@@ -17,6 +22,8 @@ th {
 }
 
 td {
+    text-align: center;
+    
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -43,4 +50,16 @@ tr {
     left: 0px;
     top: 100px;
     display: none;
+    
+}
+
+input {
+    border: 1px solid black;
+}
+
+#person_data {
+    display: flex;
+    padding: 5px;
+    flex-wrap: wrap;
+    justify-content: end;
 }
