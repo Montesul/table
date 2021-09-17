@@ -8,6 +8,12 @@ let idPersonData = '';
 
 let lastSort = '';
 
+let maxRow = personsData.length,
+    firstRow = 0,
+    lastRow = maxRow,
+    page = document.getElementById('pages');
+
+
 function loadTable(person) {
 
     tableBody.innerHTML += `
@@ -19,13 +25,36 @@ function loadTable(person) {
     </tr>`;
 }
 
-function createTable() {
-
+function createTable(fRow = firstRow, lRow = lastRow) {
     tableBody.innerHTML = '';
 
-    personsData.forEach(person => {
-        loadTable(person);
-    });
+    while (fRow < lRow) {
+        loadTable(personsData[fRow]);
+        fRow++;
+    }
+}
+
+function modeShowData() {
+
+    let pages = 0;
+
+    if (personsData.length / maxRow > Math.floor(personsData.length / maxRow)) {
+        pages = Math.floor(personsData.length / maxRow) + 1;
+    } else {
+        pages = personsData.length / maxRow;
+    }
+
+    page.innerHTML = '';
+
+    if (maxRow != personsData.length) {
+        for (let i = 0; i < pages; i++) {
+            page.innerHTML += `<a id="${i + 1}" href="#">${i + 1}</a> `;
+        }
+    }
+
+    firstRow = 0;
+
+    createTable();
 }
 
 function sortController(pI, pIG) {
@@ -37,6 +66,8 @@ function sortController(pI, pIG) {
         sortTableToDown(pI, pIG);
         lastSort = 'down';
     }
+
+    createTable();
 }
 
 function sortTableToDown(personInfo, personInfoGroup) {
@@ -71,13 +102,19 @@ function sortTableToUp(personInfo, personInfoGroup) {
 
 function formDataOpen() {
 
-    let personData = personsData.find(el => el.id == idPersonData);
+    if (idPersonData) {
+        let personData = personsData.find(el => el.id == idPersonData);
 
-    document.getElementById('data_firstName').value = personData.name.firstName;
-    document.getElementById('data_lastName').value = personData.name.lastName;
-    document.getElementById('data_about').value = personData.about;
-    document.getElementById('data_eyeColor').value = personData.eyeColor;
-    document.getElementById('data_phone').value = personData.phone;
+        document.getElementById('data_firstName').value = personData.name.firstName;
+        document.getElementById('data_lastName').value = personData.name.lastName;
+        document.getElementById('data_about').value = personData.about;
+        document.getElementById('data_eyeColor').value = personData.eyeColor;
+        document.getElementById('data_phone').value = personData.phone;
+
+        butSendDE.disabled = false;
+    } else {
+        butSendDE.disabled = true;
+    }
 }
 
 function formDataEdit() {
@@ -93,37 +130,57 @@ function formDataEdit() {
     createTable();
 }
 
-document.addEventListener('DOMContentLoaded', createTable);
+document.addEventListener('DOMContentLoaded', createTable());
 
 document.addEventListener('click', function (e) {
 
     switch (e.target.id) {
         case 'firstName': sortController('firstName', 'name');
-            createTable();
             break;
         case 'lastName': sortController('lastName', 'name');
-            createTable();
             break;
         case 'about': sortController('about');
-            createTable();
             break;
         case 'eyeColor': sortController('eyeColor');
-            createTable();
+            break;
+
+        case 'show_10_row':
+            maxRow = 10;
+            lastRow = maxRow;
+            modeShowData();
+            break;
+        case 'show_25_row':
+            maxRow = 25;
+            lastRow = maxRow;
+            modeShowData();
+            break;
+        case 'show_50_row':
+            maxRow = 50;
+            lastRow = maxRow;
+            modeShowData();
+            break;
+        case 'show_all_row':
+            maxRow = personsData.length;
+            lastRow = maxRow;
+            modeShowData(personsData.length);
             break;
     }
 
-    if (e.target == document.body || e.target == document.html) {
+    if (e.target == document.body) {
         data_edit.style.display = 'block';
         formDataOpen();
     } else if (e.target == butCloseDE) {
         data_edit.style.display = 'none';
-
     } else if (e.target == butSendDE) {
         formDataEdit();
     } else {
         if (e.target.tagName == 'TD') {
             idPersonData = e.target.parentNode.id;
             formDataOpen();
+        } else if (e.target.id / 1 > 0) {
+            lastRow = maxRow * e.target.id,
+                firstRow = lastRow - maxRow;
+            createTable();
         }
     }
 });

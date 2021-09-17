@@ -58,8 +58,20 @@ input {
 }
 
 #person_data {
-    display: flex;
-    padding: 5px;
-    flex-wrap: wrap;
-    justify-content: end;
+    display: grid;
+    grid-template-columns: 130px auto;
+}
+
+button {
+    border: 1px solid black;
+}
+
+footer {
+    border-top: 1px solid grey;
+    padding-top: 10px;
+    text-align: center;
+}
+
+#pages {
+    height: 15px;
 }
