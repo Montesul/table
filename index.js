@@ -150,13 +150,15 @@ function createTable(fRow = firstRow, lRow = lastRow) {
 
     createDataAfterSort();
 
-    while (fRow < lRow) {
+    while (fRow < lRow && fRow < personsDataAfterSort.length) {
         loadBodyTable(personsDataAfterSort[fRow]);
         fRow++;
     }
+
+    createPageList();
 }
 
-function modeShowData() {
+function createPageList() {
 
     let pages = 0;
 
@@ -173,8 +175,14 @@ function modeShowData() {
             page.innerHTML += `<a id="${i + 1}" href="#">${i + 1}</a> `;
         }
     }
+}
 
-    firstRow = 0;
+function modeShowData(target) {
+
+    if (target) {
+        lastRow = maxRow * target,
+            firstRow = lastRow - maxRow;
+    }
 
     createTable();
 }
@@ -190,12 +198,19 @@ function openSortWindow(param, addit_param = '') {
 }
 
 function sortTargetTable() {
+
     sort_data[person_param] = [];
     for (child of sort_list.childNodes) {
         if (child.tagName == "DIV" && child.childNodes[1].checked) {
             sort_data[person_param].push(child.childNodes[1].id);
         }
     }
+    firstRow = 0;
+    if (maxRow > personsDataAfterSort.length) {
+        lastRow = personsDataAfterSort.length;
+    }
+
+
     modeShowData();
 }
 
@@ -309,8 +324,6 @@ document.addEventListener('DOMContentLoaded', modeShowData());
 
 document.addEventListener('click', function (e) {
 
-    console.log(e.target.id);
-
     switch (e.target.id) {
         case 'firstName': openSortWindow('firstName', 'name');
             break;
@@ -375,9 +388,7 @@ document.addEventListener('click', function (e) {
             idPersonData = e.target.parentNode.id;
             formDataOpen();
         } else if (e.target.id / 1) {
-            lastRow = maxRow * e.target.id,
-                firstRow = lastRow - maxRow;
-                modeShowData();
+            modeShowData(e.target.id);
         }
     }
 });
