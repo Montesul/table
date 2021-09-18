@@ -151,27 +151,30 @@ div > img {
     border: 1px solid red;
     background: white;
     display: none;
-    width: 200px;
+    right: 0px;
+    width: 25%;
     height: 300px;
     padding: 5px;
+    top: 100px;
 }
 
 .sort_table > div {
     padding: 5px;
 }
 
-#sort_list {
+#sort_list_window {
     border: 1px solid black;
     width: 190px;
     height: 220px;
     padding: 5px;
+}
 
+#sort_list {
+    border: 1px solid black;
+    width: 180px;
+    height: 190px;
+    padding: 5px;
     display: grid;
     grid-column: auto;
     overflow: scroll;
-    
-}
-
-.column_name {
-    position: relative;
 }

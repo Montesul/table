@@ -15,9 +15,10 @@ let person_param = '',
     addit_person_param = '';
 
 const target_list = [],
-    sort_data = [];
+    sort_data = {};
 
-let list_for_sort = [];
+let list_for_sort = [],
+    personsDataAfterSort = [];
 
 const id_column = document.querySelector('#id_column'),
     firstName_column = document.querySelector('#firstName_column'),
@@ -32,7 +33,9 @@ const id_column = document.querySelector('#id_column'),
     sort_up = document.querySelector('#sort_up'),
     sort_list = document.querySelector('#sort_list'),
     close_sort_table = document.querySelector('#close_sort_table'),
-    but_sorting = document.querySelector('#sorting');
+    but_sorting = document.querySelector('#sorting'),
+    select_all = document.querySelector('#select_all'),
+    clear_all = document.querySelector('#clear_all');
 
 function checkColumnHead() {
     let ans = '';
@@ -95,49 +98,77 @@ function loadBodyTable(person) {
     </tr>`;
 }
 
+function check(person) {
+    if (sort_data.id) {
+        if (sort_data.id.indexOf(person.id) == -1) {
+            return false;
+        }
+    }
+    if (sort_data.firstName) {
+        if (sort_data.firstName.indexOf(person.name.firstName) == -1) {
+            return false;
+        }
+    }
+    if (sort_data.lastName) {
+        if (sort_data.lastName.indexOf(person.name.lastName) == -1) {
+            return false;
+        }
+    }
+    if (sort_data.about) {
+        if (sort_data.about.indexOf(person.about) == -1) {
+            return false;
+        }
+    }
+    if (sort_data.eyeColor) {
+        if (sort_data.eyeColor.indexOf(person.eyeColor) == -1) {
+            return false;
+        }
+    }
+    if (sort_data.phone) {
+        if (sort_data.phone.indexOf(person.phone) == -1) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function createDataAfterSort() {
+    personsDataAfterSort = [];
+
+    for (person of personsData) {
+        if (check(person)) {
+            personsDataAfterSort.push(person);
+        }
+    }
+}
+
 function createTable(fRow = firstRow, lRow = lastRow) {
+
     tableBody.innerHTML = '';
 
     loadHeadTable();
 
-    // if (list_for_sort.length > 0) {
-    //     sort_data = personsData.filter(el => {
-    //         if (addit_person_param) {
-    //             if (list_for_sort.indexOf(el[addit_person_param][person_param]) != -1) {
-    //                 return el;
-    //             }
-    //         } else {
-    //             if (list_for_sort.indexOf(el[person_param]) != -1) {
-    //                 return el;
-    //             }
-    //         }
-    //     })
-    //     while (fRow < lRow) {
-    //         loadBodyTable(sort_data[fRow]);
-    //         fRow++;
-    //     }
-    // } else {
+    createDataAfterSort();
+
     while (fRow < lRow) {
-        loadBodyTable(personsData[fRow]);
+        loadBodyTable(personsDataAfterSort[fRow]);
         fRow++;
     }
-    //}
-
 }
 
 function modeShowData() {
 
     let pages = 0;
 
-    if (personsData.length / maxRow > Math.floor(personsData.length / maxRow)) {
-        pages = Math.floor(personsData.length / maxRow) + 1;
+    if (personsDataAfterSort.length / maxRow > Math.floor(personsDataAfterSort.length / maxRow)) {
+        pages = Math.floor(personsDataAfterSort.length / maxRow) + 1;
     } else {
-        pages = personsData.length / maxRow;
+        pages = personsDataAfterSort.length / maxRow;
     }
 
     page.innerHTML = '';
 
-    if (maxRow != personsData.length) {
+    if (maxRow < personsDataAfterSort.length) {
         for (let i = 0; i < pages; i++) {
             page.innerHTML += `<a id="${i + 1}" href="#">${i + 1}</a> `;
         }
@@ -148,39 +179,33 @@ function modeShowData() {
     createTable();
 }
 
-function openSortWindow(e, param, addit_param = '') {
+function openSortWindow(param, addit_param = '') {
 
     person_param = param,
         addit_person_param = addit_param;
 
     sortTarget();
 
-    document.getElementById(`sort_${param}`).style.left = `${e.pageX - 5}px`;
-    sort_table.style.top = `${e.pageY - 5}px`;
     sort_table.style.display = 'block';
 }
 
 function sortTargetTable() {
+    sort_data[person_param] = [];
     for (child of sort_list.childNodes) {
         if (child.tagName == "DIV" && child.childNodes[1].checked) {
-            target_list.push(child.childNodes[1].id);
+            sort_data[person_param].push(child.childNodes[1].id);
         }
     }
+    modeShowData();
 }
 
 function createSortTarget(element) {
 
-    let div = document.createElement('div');
-    div.id = `sort_${person_param}`;
-    div.className = 'sort_table';
-    div.innerHTML = '<div><button id = "sort_down">a-z 0-9</button><button id="sort_up">z-a 9-0</button></div><div id="sort_list"></div><div><button id="sorting">Сортировать</button><button id="close_sort_table">Закрыть</button></div>'
-    document.getElementById(person_param).append(div);
-
     if (list_for_sort.indexOf(element) == -1) {
 
         list_for_sort.push(element);
-        div.sort_list.innerHTML += `
-            <div>${element} <input id="${element}" type="checkbox" checked></div>
+        sort_list.innerHTML += `
+            <div>${element} <input id="${element}" type="checkbox"></div>
         `;
     }
 }
@@ -188,7 +213,7 @@ function createSortTarget(element) {
 function sortTarget() {
 
     list_for_sort = [];
-    sort_list.innerHTML = ''
+    sort_list.innerHTML = '';
     if (addit_person_param) {
         personsData.forEach(element => {
             createSortTarget(element[addit_person_param][person_param]);
@@ -197,6 +222,22 @@ function sortTarget() {
         personsData.forEach(element => {
             createSortTarget(element[person_param]);
         });
+    }
+}
+
+function selectAll() {
+    for (child of sort_list.childNodes) {
+        if (child.tagName == "DIV" && !child.childNodes[1].checked) {
+            child.childNodes[1].checked = true;
+        }
+    }
+}
+
+function clearAll() {
+    for (child of sort_list.childNodes) {
+        if (child.tagName == "DIV" && child.childNodes[1].checked) {
+            child.childNodes[1].checked = false;
+        }
     }
 }
 
@@ -218,7 +259,7 @@ function sortTableToDown() {
         }
     });
 
-    createTable();
+    modeShowData();
 }
 
 function sortTableToUp() {
@@ -231,7 +272,7 @@ function sortTableToUp() {
         }
     });
 
-    createTable();
+    modeShowData();
 }
 
 function formDataOpen() {
@@ -261,27 +302,27 @@ function formDataEdit() {
     personData.eyeColor = document.getElementById('data_eyeColor').value;
     personData.phone = document.getElementById('data_phone').value;
 
-    createTable();
+    modeShowData();
 }
 
-document.addEventListener('DOMContentLoaded', createTable());
+document.addEventListener('DOMContentLoaded', modeShowData());
 
 document.addEventListener('click', function (e) {
 
     console.log(e.target.id);
 
     switch (e.target.id) {
-        case 'firstName': openSortWindow(e, 'firstName', 'name');
+        case 'firstName': openSortWindow('firstName', 'name');
             break;
-        case 'lastName': openSortWindow(e, 'lastName', 'name');
+        case 'lastName': openSortWindow('lastName', 'name');
             break;
-        case 'about': openSortWindow(e, 'about');
+        case 'about': openSortWindow('about');
             break;
-        case 'eyeColor': openSortWindow(e, 'eyeColor');
+        case 'eyeColor': openSortWindow('eyeColor');
             break;
-        case 'id': openSortWindow(e, 'id');
+        case 'id': openSortWindow('id');
             break;
-        case 'phone': openSortWindow(e, 'phone');
+        case 'phone': openSortWindow('phone');
             break;
 
         case 'sort_down': sortTableToDown();
@@ -292,6 +333,10 @@ document.addEventListener('click', function (e) {
             sort_table.style.display = 'none';
             break;
         case 'close_sort_table': sort_table.style.display = 'none';
+            break;
+        case 'select_all': selectAll();
+            break;
+        case 'clear_all': clearAll();
             break;
 
         case 'show_10_row':
@@ -310,9 +355,9 @@ document.addEventListener('click', function (e) {
             modeShowData();
             break;
         case 'show_all_row':
-            maxRow = personsData.length;
+            maxRow = personsDataAfterSort.length;
             lastRow = maxRow;
-            modeShowData(personsData.length);
+            modeShowData(personsDataAfterSort.length);
             break;
     }
 
@@ -324,7 +369,7 @@ document.addEventListener('click', function (e) {
     } else if (e.target == butSendDE) {
         formDataEdit();
     } else if (e.target == but_show_hide) {
-        createTable();
+        modeShowData();
     } else {
         if (e.target.tagName == 'TD') {
             idPersonData = e.target.parentNode.id;
@@ -332,7 +377,7 @@ document.addEventListener('click', function (e) {
         } else if (e.target.id / 1) {
             lastRow = maxRow * e.target.id,
                 firstRow = lastRow - maxRow;
-            createTable();
+                modeShowData();
         }
     }
 });
