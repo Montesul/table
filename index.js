@@ -6,32 +6,123 @@ const personsData = data,
 
 let idPersonData = '';
 
-let lastSort = '';
-
 let maxRow = personsData.length,
     firstRow = 0,
     lastRow = maxRow,
     page = document.getElementById('pages');
 
+let person_param = '',
+    addit_person_param = '';
 
-function loadTable(person) {
+const target_list = [],
+    sort_data = [];
+
+let list_for_sort = [];
+
+const id_column = document.querySelector('#id_column'),
+    firstName_column = document.querySelector('#firstName_column'),
+    lastName_column = document.querySelector('#lastName_column'),
+    about_column = document.querySelector('#about_column'),
+    eyeColor_column = document.querySelector('#eyeColor_column'),
+    phone_column = document.querySelector('#phone_column'),
+    head_table = document.querySelector('#head_table'),
+    but_show_hide = document.querySelector('#show_hide'),
+
+    sort_down = document.querySelector('#sort_down'),
+    sort_up = document.querySelector('#sort_up'),
+    sort_list = document.querySelector('#sort_list'),
+    close_sort_table = document.querySelector('#close_sort_table'),
+    but_sorting = document.querySelector('#sorting');
+
+function checkColumnHead() {
+    let ans = '';
+    if (id_column.checked) {
+        ans += `<th id="id" class="id column_name">id</th>`;
+    }
+    if (firstName_column.checked) {
+        ans += `<th id="firstName" class="other column_name">Имя (firstName)</th>`;
+    }
+    if (lastName_column.checked) {
+        ans += ` <th id="lastName" class="other column_name">Фамилия (lastName)</th>`;
+    }
+    if (about_column.checked) {
+        ans += `<th id="about" class="column_name">Описание (about)</th>`;
+    }
+    if (eyeColor_column.checked) {
+        ans += `<th id="eyeColor" class="other column_name">Цвет глаз (eyeColor)</th>`;
+    }
+    if (phone_column.checked) {
+        ans += `<th id="phone" class="other column_name">Телефон (phone)</th>`;
+    }
+    return ans;
+}
+
+function loadHeadTable() {
+    head_table.innerHTML = `                
+    <tr>
+        ${checkColumnHead()}
+    </tr>`;
+}
+
+function checkColumnBody(person) {
+    let ans = '';
+    if (id_column.checked) {
+        ans += `<td class="id">${person.id}</td>`;
+    }
+    if (firstName_column.checked) {
+        ans += `<td class="other">${person.name.firstName}</td>`;
+    }
+    if (lastName_column.checked) {
+        ans += `<td class="other">${person.name.lastName}</td>`;
+    }
+    if (about_column.checked) {
+        ans += `<td class="about">${person.about}</td>`;
+    }
+    if (eyeColor_column.checked) {
+        ans += `<td class="other"><div style=" display: flex; height: auto; width: auto; justify-content: space-evenly;"> ${person.eyeColor} <div style=" background-color: ${person.eyeColor}; width: 15px; height: 15px;"></div></div></td>`;
+    }
+    if (phone_column.checked) {
+        ans += `<td class="other">${person.phone}</td>`;
+    }
+    return ans;
+}
+
+function loadBodyTable(person) {
 
     tableBody.innerHTML += `
     <tr id=${person.id}>
-    <td>${person.name.firstName}</td>
-    <td>${person.name.lastName}</td>
-    <td class="about">${person.about}</td>
-    <td><div style=" display: flex; height: auto; width: auto; justify-content: space-evenly;"> ${person.eyeColor} <div style=" background-color: ${person.eyeColor}; width: 15px; height: 15px;"></div></div></td>
+    ${checkColumnBody(person)}
     </tr>`;
 }
 
 function createTable(fRow = firstRow, lRow = lastRow) {
     tableBody.innerHTML = '';
 
+    loadHeadTable();
+
+    // if (list_for_sort.length > 0) {
+    //     sort_data = personsData.filter(el => {
+    //         if (addit_person_param) {
+    //             if (list_for_sort.indexOf(el[addit_person_param][person_param]) != -1) {
+    //                 return el;
+    //             }
+    //         } else {
+    //             if (list_for_sort.indexOf(el[person_param]) != -1) {
+    //                 return el;
+    //             }
+    //         }
+    //     })
+    //     while (fRow < lRow) {
+    //         loadBodyTable(sort_data[fRow]);
+    //         fRow++;
+    //     }
+    // } else {
     while (fRow < lRow) {
-        loadTable(personsData[fRow]);
+        loadBodyTable(personsData[fRow]);
         fRow++;
     }
+    //}
+
 }
 
 function modeShowData() {
@@ -57,47 +148,90 @@ function modeShowData() {
     createTable();
 }
 
-function sortController(pI, pIG) {
+function openSortWindow(e, param, addit_param = '') {
 
-    if (lastSort == 'down') {
-        sortTableToUp(pI, pIG);
-        lastSort = 'up';
-    } else {
-        sortTableToDown(pI, pIG);
-        lastSort = 'down';
+    person_param = param,
+        addit_person_param = addit_param;
+
+    sortTarget();
+
+    document.getElementById(`sort_${param}`).style.left = `${e.pageX - 5}px`;
+    sort_table.style.top = `${e.pageY - 5}px`;
+    sort_table.style.display = 'block';
+}
+
+function sortTargetTable() {
+    for (child of sort_list.childNodes) {
+        if (child.tagName == "DIV" && child.childNodes[1].checked) {
+            target_list.push(child.childNodes[1].id);
+        }
     }
+}
+
+function createSortTarget(element) {
+
+    let div = document.createElement('div');
+    div.id = `sort_${person_param}`;
+    div.className = 'sort_table';
+    div.innerHTML = '<div><button id = "sort_down">a-z 0-9</button><button id="sort_up">z-a 9-0</button></div><div id="sort_list"></div><div><button id="sorting">Сортировать</button><button id="close_sort_table">Закрыть</button></div>'
+    document.getElementById(person_param).append(div);
+
+    if (list_for_sort.indexOf(element) == -1) {
+
+        list_for_sort.push(element);
+        div.sort_list.innerHTML += `
+            <div>${element} <input id="${element}" type="checkbox" checked></div>
+        `;
+    }
+}
+
+function sortTarget() {
+
+    list_for_sort = [];
+    sort_list.innerHTML = ''
+    if (addit_person_param) {
+        personsData.forEach(element => {
+            createSortTarget(element[addit_person_param][person_param]);
+        });
+    } else {
+        personsData.forEach(element => {
+            createSortTarget(element[person_param]);
+        });
+    }
+}
+
+function sortTableToDown() {
+
+    personsData.sort((prev, next) => {
+        if (addit_person_param) {
+            if (prev[addit_person_param][person_param] > next[addit_person_param][person_param]) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            if (prev[person_param] > next[person_param]) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    });
 
     createTable();
 }
 
-function sortTableToDown(personInfo, personInfoGroup) {
+function sortTableToUp() {
 
-    return personsData.sort((prev, next) => {
-        if (personInfoGroup) {
-            if (prev[personInfoGroup][personInfo] > next[personInfoGroup][personInfo]) {
-                return 1;
-            } else {
-                return -1;
-            }
+    personsData.sort((prev, next) => {
+        if (addit_person_param) {
+            return prev[addit_person_param][person_param] > next[addit_person_param][person_param] ? -1 : 1;
         } else {
-            if (prev[personInfo] > next[personInfo]) {
-                return 1;
-            } else {
-                return -1;
-            }
+            return prev[person_param] > next[person_param] ? -1 : 1;
         }
     });
-}
 
-function sortTableToUp(personInfo, personInfoGroup) {
-
-    return personsData.sort((prev, next) => {
-        if (personInfoGroup) {
-            return prev[personInfoGroup][personInfo] > next[personInfoGroup][personInfo] ? -1 : 1;
-        } else {
-            return prev[personInfo] > next[personInfo] ? -1 : 1;
-        }
-    });
+    createTable();
 }
 
 function formDataOpen() {
@@ -134,14 +268,30 @@ document.addEventListener('DOMContentLoaded', createTable());
 
 document.addEventListener('click', function (e) {
 
+    console.log(e.target.id);
+
     switch (e.target.id) {
-        case 'firstName': sortController('firstName', 'name');
+        case 'firstName': openSortWindow(e, 'firstName', 'name');
             break;
-        case 'lastName': sortController('lastName', 'name');
+        case 'lastName': openSortWindow(e, 'lastName', 'name');
             break;
-        case 'about': sortController('about');
+        case 'about': openSortWindow(e, 'about');
             break;
-        case 'eyeColor': sortController('eyeColor');
+        case 'eyeColor': openSortWindow(e, 'eyeColor');
+            break;
+        case 'id': openSortWindow(e, 'id');
+            break;
+        case 'phone': openSortWindow(e, 'phone');
+            break;
+
+        case 'sort_down': sortTableToDown();
+            break;
+        case 'sort_up': sortTableToUp();
+            break;
+        case 'sorting': sortTargetTable();
+            sort_table.style.display = 'none';
+            break;
+        case 'close_sort_table': sort_table.style.display = 'none';
             break;
 
         case 'show_10_row':
@@ -173,11 +323,13 @@ document.addEventListener('click', function (e) {
         data_edit.style.display = 'none';
     } else if (e.target == butSendDE) {
         formDataEdit();
+    } else if (e.target == but_show_hide) {
+        createTable();
     } else {
         if (e.target.tagName == 'TD') {
             idPersonData = e.target.parentNode.id;
             formDataOpen();
-        } else if (e.target.id / 1 > 0) {
+        } else if (e.target.id / 1) {
             lastRow = maxRow * e.target.id,
                 firstRow = lastRow - maxRow;
             createTable();

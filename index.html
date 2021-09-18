@@ -11,15 +11,104 @@
 </head>
 
 <body>
+    <header>
+        <div>
+            <h1 id="title">The Table</h1>
+        </div>
+        <div id="config">
+            <img id="but_config" src="./config.png" alt="config">
+            <div id="checkbox_column">
+                <div id="wrapper">
+                    <div>id <input id="id_column" type="checkbox"></div>
+                    <div>firstName <input id="firstName_column" type="checkbox" checked></div>
+                    <div>lastName <input id="lastName_column" type="checkbox" checked></div>
+                    <div>about <input id="about_column" type="checkbox" checked></div>
+                    <div>eyeColor <input id="eyeColor_column" type="checkbox" checked></div>
+                    <div>phone <input id="phone_column" type="checkbox"></div>
+                    <button id="show_hide">Показать/Скрыть</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div id="sort_id" class="sort_table">
+        <div>
+            <button id="sort_down">a-z 0-9</button>
+            <button id="sort_up">z-a 9-0</button>
+        </div>
+        <div id="sort_list"></div>
+        <div>
+            <button id="sorting">Сортировать</button>
+            <button id="close_sort_table">Закрыть</button>
+        </div>
+    </div>
+
+    <div id="sort_firstName" class="sort_table">
+        <div>
+            <button id="sort_down">a-z 0-9</button>
+            <button id="sort_up">z-a 9-0</button>
+        </div>
+        <div id="sort_list"></div>
+        <div>
+            <button id="sorting">Сортировать</button>
+            <button id="close_sort_table">Закрыть</button>
+        </div>
+    </div>
+
+    <div id="sort_lastName" class="sort_table">
+        <div>
+            <button id="sort_down">a-z 0-9</button>
+            <button id="sort_up">z-a 9-0</button>
+        </div>
+        <div id="sort_list"></div>
+        <div>
+            <button id="sorting">Сортировать</button>
+            <button id="close_sort_table">Закрыть</button>
+        </div>
+    </div>
+
+    <div id="sort_about" class="sort_table">
+        <div>
+            <button id="sort_down">a-z 0-9</button>
+            <button id="sort_up">z-a 9-0</button>
+        </div>
+        <div id="sort_list"></div>
+        <div>
+            <button id="sorting">Сортировать</button>
+            <button id="close_sort_table">Закрыть</button>
+        </div>
+    </div>
+
+    <div id="sort_eyeColor" class="sort_table">
+        <div>
+            <button id="sort_down">a-z 0-9</button>
+            <button id="sort_up">z-a 9-0</button>
+        </div>
+        <div id="sort_list"></div>
+        <div>
+            <button id="sorting">Сортировать</button>
+            <button id="close_sort_table">Закрыть</button>
+        </div>
+    </div>
+
+    <div id="sort_phone" class="sort_table">
+        <div>
+            <button id="sort_down">a-z 0-9</button>
+            <button id="sort_up">z-a 9-0</button>
+        </div>
+        <div id="sort_list"></div>
+        <div>
+            <button id="sorting">Сортировать</button>
+            <button id="close_sort_table">Закрыть</button>
+        </div>
+    </div>
+
+
     <div id="table">
         <table>
-            <thead>
-                <tr>
-                    <th id="firstName">Имя (firstName)</th>
-                    <th id="lastName">Фамилия (lastName)</th>
-                    <th id="about">Описание (about)</th>
-                    <th id="eyeColor">Цвет глаз (eyeColor)</th>
-                </tr>
+            <thead id="head_table">
+
             </thead>
             <tbody id="tableData"></tbody>
         </table>
@@ -35,7 +124,7 @@
                 <div>Цвет глаз (eyeColor)</div><input id="data_eyeColor" type="text">
                 <div>Телефон (phone)</div><input id="data_phone" type="text">
             </div>
-            <button id="but_send">Отправить</button>
+            <button id="but_send">Сохранить</button>
             <button id="but_close">Закрыть</button>
         </form>
     </div>

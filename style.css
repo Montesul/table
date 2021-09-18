@@ -18,21 +18,35 @@ table {
 
 th {
     border: 1px solid black;
+    
+    min-width: 100px;
+}
+
+.id {
     padding: 10px;
+    min-width: 50px;
+    max-width: 70px;
 }
 
 td {
     text-align: center;
-    
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.other {
+    padding: 10px;
+    min-width: 80px;
+    max-width: 100px;
 }
 
 tr {
-    border-bottom: 1px solid black ;
+    border-bottom: 1px solid black;
 }
 
 .about {
+    white-space: normal;
     text-align: left;
 
     display: -webkit-box;
@@ -43,14 +57,14 @@ tr {
 }
 
 #data_edit {
-    width: 25%;
+    width: 450px;
     height: 50%;
     border: 1px solid red;
     position: fixed;
     left: 0px;
     top: 100px;
     display: none;
-    
+    background-color: white;
 }
 
 input {
@@ -74,4 +88,90 @@ footer {
 
 #pages {
     height: 15px;
+}
+
+#data_edit {
+    padding: 10px;
+}
+
+header {
+    border-bottom: 1px solid gray;
+    height: 50px;
+}
+
+#title {
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+}
+
+#config {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    right: 0px;
+    position: absolute;
+    background: gray;
+}
+
+div > img {
+    height: 48px;
+    width: 48px;
+}
+
+#wrapper {
+    margin-left: -100px;
+    height: auto;
+    width: auto;
+    display: grid;
+    grid-column: auto;
+    padding: 5px;
+    border: 1px solid black;
+    background: white;
+}
+
+#wrapper> div {
+    padding: 5px;
+}
+
+#checkbox_column {
+    display: none;
+}
+
+#checkbox_column:hover {
+    display: block;
+}
+
+#config:hover > #checkbox_column {
+    display: block;
+}
+
+.sort_table {
+    position: absolute;
+    border: 1px solid red;
+    background: white;
+    display: none;
+    width: 200px;
+    height: 300px;
+    padding: 5px;
+}
+
+.sort_table > div {
+    padding: 5px;
+}
+
+#sort_list {
+    border: 1px solid black;
+    width: 190px;
+    height: 220px;
+    padding: 5px;
+
+    display: grid;
+    grid-column: auto;
+    overflow: scroll;
+    
+}
+
+.column_name {
+    position: relative;
 }
