@@ -27,15 +27,7 @@ const id_column = document.querySelector('#id_column'),
     eyeColor_column = document.querySelector('#eyeColor_column'),
     phone_column = document.querySelector('#phone_column'),
     head_table = document.querySelector('#head_table'),
-    but_show_hide = document.querySelector('#show_hide'),
-
-    sort_down = document.querySelector('#sort_down'),
-    sort_up = document.querySelector('#sort_up'),
-    sort_list = document.querySelector('#sort_list'),
-    close_sort_table = document.querySelector('#close_sort_table'),
-    but_sorting = document.querySelector('#sorting'),
-    select_all = document.querySelector('#select_all'),
-    clear_all = document.querySelector('#clear_all');
+    sort_list = document.querySelector('#sort_list');
 
 function checkColumnHead() {
     let ans = '';
@@ -358,35 +350,32 @@ document.addEventListener('click', function (e) {
         case 'clear_all': clearAll();
             break;
 
-        case 'show_10_row':
-            pageShowMode(10);
+        case 'show_10_row': pageShowMode(10);
             break;
-        case 'show_25_row':
-            pageShowMode(25);
+        case 'show_25_row': pageShowMode(25);
             break;
-        case 'show_50_row':
-            pageShowMode(50);
+        case 'show_50_row': pageShowMode(50);
             break;
-        case 'show_all_row':
-            pageShowMode(personsDataAfterSort.length);
+        case 'show_all_row': pageShowMode(personsDataAfterSort.length);
+            break;
+
+        case 'but_close': data_edit.style.display = 'none';
+            break;
+        case 'but_send': formDataEdit();
+            break;
+        case 'show_hide': modeShowData();
             break;
     }
 
     if (e.target == document.body) {
         data_edit.style.display = 'block';
         formDataOpen();
-    } else if (e.target == butCloseDE) {
-        data_edit.style.display = 'none';
-    } else if (e.target == butSendDE) {
-        formDataEdit();
-    } else if (e.target == but_show_hide) {
-        modeShowData();
-    } else {
-        if (e.target.tagName == 'TD') {
-            idPersonData = e.target.parentNode.id;
-            formDataOpen();
-        } else if (e.target.id / 1) {
-            modeShowData(e.target.id);
-        }
+    }
+
+    if (e.target.tagName == 'TD') {
+        idPersonData = e.target.parentNode.id;
+        formDataOpen();
+    } else if (e.target.id / 1) {
+        modeShowData(e.target.id);
     }
 });
