@@ -82,7 +82,7 @@ function checkColumnBody(person) {
         ans += `<td class="about">${person.about}</td>`;
     }
     if (eyeColor_column.checked) {
-        ans += `<td class="other"><div style=" display: flex; height: auto; width: auto; justify-content: space-evenly;"> ${person.eyeColor} <div style=" background-color: ${person.eyeColor}; width: 15px; height: 15px;"></div></div></td>`;
+        ans += `<td class="other"><div class="eyeColor">${person.eyeColor}<div style="background-color: ${person.eyeColor}"></div></div></td>`;
     }
     if (phone_column.checked) {
         ans += `<td class="other">${person.phone}</td>`;
@@ -187,6 +187,13 @@ function modeShowData(target) {
     createTable();
 }
 
+function pageShowMode(value = maxRow) {
+    firstRow = 0;
+    maxRow = value;
+    lastRow = maxRow;
+    createTable();
+}
+
 function openSortWindow(param, addit_param = '') {
 
     person_param = param,
@@ -210,8 +217,7 @@ function sortTargetTable() {
         lastRow = personsDataAfterSort.length;
     }
 
-
-    modeShowData();
+    pageShowMode();
 }
 
 function createSortTarget(element) {
@@ -353,24 +359,16 @@ document.addEventListener('click', function (e) {
             break;
 
         case 'show_10_row':
-            maxRow = 10;
-            lastRow = maxRow;
-            modeShowData();
+            pageShowMode(10);
             break;
         case 'show_25_row':
-            maxRow = 25;
-            lastRow = maxRow;
-            modeShowData();
+            pageShowMode(25);
             break;
         case 'show_50_row':
-            maxRow = 50;
-            lastRow = maxRow;
-            modeShowData();
+            pageShowMode(50);
             break;
         case 'show_all_row':
-            maxRow = personsDataAfterSort.length;
-            lastRow = maxRow;
-            modeShowData(personsDataAfterSort.length);
+            pageShowMode(personsDataAfterSort.length);
             break;
     }
 

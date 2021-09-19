@@ -178,3 +178,21 @@ div > img {
     grid-column: auto;
     overflow: scroll;
 }
+
+#sort_list > div{
+    padding: 5px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.eyeColor {
+    display: flex; 
+    height: auto; 
+    width: auto; 
+    justify-content: space-evenly;
+}
+
+.eyeColor > div {
+    width: 15px; 
+    height: 15px;
+}
