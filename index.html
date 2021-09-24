@@ -39,8 +39,8 @@
 
         <div id="sort_list_window">
             <div>
-            <button id="select_all">Выбрать всех</button>
-            <button id="clear_all">Санять со всех</button>
+                <button id="select_all">Выбрать всех</button>
+                <button id="clear_all">Санять со всех</button>
             </div>
             <div id="sort_list"></div>
         </div>
@@ -66,19 +66,27 @@
                 <div>Описание (about)</div><input id="data_about" type="text">
                 <div>Цвет глаз (eyeColor)</div><input id="data_eyeColor" type="text">
                 <div>Телефон (phone)</div><input id="data_phone" type="text">
+                <div>
+                    <button id="but_send">Сохранить</button>
+                    <button id="but_close">Закрыть</button>
+                </div>
             </div>
-            <button id="but_send">Сохранить</button>
-            <button id="but_close">Закрыть</button>
         </form>
     </div>
 
     <footer>
-        <div id="pages"></div>
-        <div id="view_mode">
-            <a id="show_10_row" href="#">10</a>
-            <a id="show_25_row" href="#">25</a>
-            <a id="show_50_row" href="#">50</a>
-            <a id="show_all_row" href="#">All</a>
+        <div id="foo_wrapper">
+            <div id="pages">
+                <div id="arrow_down" class="arrow arrow_left"></div>
+                <div id="page"></div>
+                <div id="arrow_up" class="arrow arrow_right"></div>
+            </div>
+            <div id="view_mode">
+                <a id="show_10_row" href="#">10</a>
+                <a id="show_25_row" href="#">25</a>
+                <a id="show_50_row" href="#">50</a>
+                <a id="show_all_row" href="#">All</a>
+            </div>
         </div>
 
     </footer>

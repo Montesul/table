@@ -9,7 +9,10 @@ let idPersonData = '';
 let maxRow = personsData.length,
     firstRow = 0,
     lastRow = maxRow,
-    page = document.getElementById('pages');
+    page = document.getElementById('page'),
+    pages = document.getElementById('pages'),
+    pageCount = 1,
+    pagesMaxCount = 1;
 
 let person_param = '',
     addit_person_param = '';
@@ -148,39 +151,41 @@ function createTable(fRow = firstRow, lRow = lastRow) {
     }
 
     createPageList();
+
+    console.log(fRow, fRow);
 }
 
 function createPageList() {
 
-    let pages = 0;
-
     if (personsDataAfterSort.length / maxRow > Math.floor(personsDataAfterSort.length / maxRow)) {
-        pages = Math.floor(personsDataAfterSort.length / maxRow) + 1;
+        pagesMaxCount = Math.floor(personsDataAfterSort.length / maxRow) + 1;
     } else {
-        pages = personsDataAfterSort.length / maxRow;
+        pagesMaxCount = personsDataAfterSort.length / maxRow;
     }
 
     page.innerHTML = '';
 
     if (maxRow < personsDataAfterSort.length) {
-        for (let i = 0; i < pages; i++) {
-            page.innerHTML += `<a id="${i + 1}" href="#">${i + 1}</a> `;
-        }
+        pages.style.display = 'flex';
+        page.innerHTML += `${pageCount} of ${pagesMaxCount}`;
+    } else {
+        pages.style.display = 'none';
     }
 }
 
-function modeShowData(target) {
+function pageShowData() {
 
-    if (target) {
-        lastRow = maxRow * target,
-            firstRow = lastRow - maxRow;
-    }
+    console.log(pageCount);
+
+        lastRow = maxRow * pageCount;
+        firstRow = lastRow - maxRow;
 
     createTable();
 }
 
-function pageShowMode(value = maxRow) {
+function modeShowData(value = maxRow) {
     firstRow = 0;
+    pageCount = 1;
     maxRow = value;
     lastRow = maxRow;
     createTable();
@@ -209,7 +214,7 @@ function sortTargetTable() {
         lastRow = personsDataAfterSort.length;
     }
 
-    pageShowMode();
+    modeShowData();
 }
 
 function createSortTarget(element) {
@@ -272,7 +277,7 @@ function sortTableToDown() {
         }
     });
 
-    modeShowData();
+    createTable();
 }
 
 function sortTableToUp() {
@@ -285,7 +290,7 @@ function sortTableToUp() {
         }
     });
 
-    modeShowData();
+    createTable();
 }
 
 function formDataOpen() {
@@ -315,10 +320,10 @@ function formDataEdit() {
     personData.eyeColor = document.getElementById('data_eyeColor').value;
     personData.phone = document.getElementById('data_phone').value;
 
-    modeShowData();
+    createTable();
 }
 
-document.addEventListener('DOMContentLoaded', modeShowData());
+document.addEventListener('DOMContentLoaded', pageShowData());
 
 document.addEventListener('click', function (e) {
 
@@ -350,20 +355,33 @@ document.addEventListener('click', function (e) {
         case 'clear_all': clearAll();
             break;
 
-        case 'show_10_row': pageShowMode(10);
+        case 'show_10_row': modeShowData(10);
             break;
-        case 'show_25_row': pageShowMode(25);
+        case 'show_25_row': modeShowData(25);
             break;
-        case 'show_50_row': pageShowMode(50);
+        case 'show_50_row': modeShowData(50);
             break;
-        case 'show_all_row': pageShowMode(personsDataAfterSort.length);
+        case 'show_all_row': modeShowData(personsDataAfterSort.length);
             break;
 
         case 'but_close': data_edit.style.display = 'none';
             break;
         case 'but_send': formDataEdit();
             break;
-        case 'show_hide': modeShowData();
+        case 'show_hide': createTable();
+            break;
+
+        case 'arrow_down':
+            if (pageCount - 1 > 0) {
+                pageCount--;
+                pageShowData();
+            }
+            break;
+        case 'arrow_up':
+            if (pageCount + 1 <= pagesMaxCount) {
+                pageCount++;
+                pageShowData();
+            }
             break;
     }
 
@@ -375,7 +393,5 @@ document.addEventListener('click', function (e) {
     if (e.target.tagName == 'TD') {
         idPersonData = e.target.parentNode.id;
         formDataOpen();
-    } else if (e.target.id / 1) {
-        modeShowData(e.target.id);
     }
 });

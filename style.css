@@ -74,6 +74,8 @@ input {
 #person_data {
     display: grid;
     grid-template-columns: 130px auto;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
 }
 
 button {
@@ -84,14 +86,30 @@ footer {
     border-top: 1px solid grey;
     padding-top: 10px;
     text-align: center;
+    display: grid;
+    grid-template-areas: ". el .";
+    grid-template-columns: auto 100px auto;  
+}
+
+#foo_wrapper {
+    grid-area: el;
+    align-self: center;
+    justify-self: center;
+}
+
+#foo_wrapper > div {
+    margin-top: 10px;
 }
 
 #pages {
     height: 15px;
+    display: flex;
+    align-items: center;
 }
 
 #data_edit {
     padding: 10px;
+    height: auto;
 }
 
 header {
@@ -152,7 +170,7 @@ div > img {
     background: white;
     display: none;
     right: 0px;
-    width: 25%;
+    width: 350px;
     height: 300px;
     padding: 5px;
     top: 100px;
@@ -164,14 +182,14 @@ div > img {
 
 #sort_list_window {
     border: 1px solid black;
-    width: 190px;
+    width: auto;
     height: 220px;
     padding: 5px;
 }
 
 #sort_list {
     border: 1px solid black;
-    width: 180px;
+    width: auto;
     height: 190px;
     padding: 5px;
     display: grid;
@@ -195,4 +213,24 @@ div > img {
 .eyeColor > div {
     width: 15px; 
     height: 15px;
+}
+
+.arrow {
+    width: 15px;
+    height: 15px;
+    
+}
+
+.arrow_left {
+    margin-right: 5px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #6E18C0;
+}
+
+.arrow_right {
+    margin-left: 5px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #6E18C0;
 }
